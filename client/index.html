@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tests</title>
+	<link rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="bar">
+	<input type="text" class="bar__name" id="firstName" placeholder="First Name" value="name">
+	<input type="text" class="bar__name" id="lastName" placeholder="Last Name" value="name">
+
+	<select class="bar__list" id="tests"></select>
+
+	<button type="button" class="bar__btn" onclick="start();">START</button>
+</div>
+
+
+<div id="content"></div>
+
+
+
+<script type="text/x-tmpl" id="test-block-empty">
+	<div class="test-block empty">
+		<ul class="test-block__pagination pagination">
+			<li class="line">&nbsp;</li>
+			<li class="line">&nbsp;</li>
+			<li class="line">&nbsp;</li>
+			<li class="line">&nbsp;</li>
+		</ul>
+
+		<div class="test-block__area">
+			<div class="test-block__area__question line">&nbsp;</div>
+			<ul class="test-block__area__answers">
+				<li><div class="line w-8">&nbsp;</div></li>
+				<li><div class="line w-8">&nbsp;</div></li>
+				<li><div class="line w-8">&nbsp;</div></li>
+				<li><div class="line w-8">&nbsp;</div></li>
+			</ul>
+		</div>
+
+		<div class="test-block__controls">
+			<div class="line empty-btn">&nbsp;</div>
+			<div class="line empty-btn">&nbsp;</div>
+			<div class="line empty-btn right">&nbsp;</div>
+		</div>
+	</div>
+</script>
+
+
+
+<script type="text/x-tmpl" id="test-block">
+	<div class="test-block">
+		<ul class="test-block__pagination pagination">
+
+			{% for (let i=1; i <= o.questionCount; i++) { %}
+				{% if (i === o.currentQuestion) { %}
+
+					<li class="active"><a href="#">{%= i %}</a></li>
+				{% } else { %}
+					<li><a href="#" onclick="changeQuestion({%= i %});">{%= i %}</a></li>
+
+				{% } %}
+			{% } %}
+
+		</ul>
+
+
+		<div class="test-block__area">
+			<span class="test-block__area__question">{%= o.question.title %}</span>
+			<ul class="test-block__area__answers">
+
+				{% for (let i=0; i < o.question.answers.length; i++) { %}
+					{% if (i === o.selected) { %}
+
+						<li><label>
+							<input type="radio" name="answer" checked>{%= o.question.answers[i] %}
+						</label></li>
+					{% } else { %}
+						<li><label>
+							<input type="radio" name="answer"
+								onclick="selectQuestion({%= o.currentQuestion %}, {%= i %});">
+									{%= o.question.answers[i] %}
+						</label></li>
+
+					{% } %}
+				{% } %}
+
+			</ul>
+		</div>
+
+
+		<div class="test-block__controls">
+			<button type="button" class="test-block__controls__btn" 
+							onclick="changeQuestion({%= o.currentQuestion-1 %});">PREVIOUS</button>
+			<button type="button" class="test-block__controls__btn" 
+							onclick="changeQuestion({%= o.currentQuestion+1 %});">NEXT</button>
+			<button type="button" class="test-block__controls__btn right btn-success"
+							onclick="endQuiz();">FINISH</button>
+		</div>
+	</div>
+</script>
+
+<script src="js/app.js"></script>
+</body>
+</html>

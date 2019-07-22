@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tests</title>
+	<link rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="bar">
+	<input type="text" class="bar__name" id="testTitle" placeholder="Test title" value="demo test">
+</div>
+
+
+<div id="content"></div>
+
+
+
+<script type="text/x-tmpl" id="test-block">
+	<div class="test-block">
+		<ul class="test-block__pagination pagination">
+
+			{% for (let i=1; i <= o.questionCount; i++) { %}
+				{% if (i === o.currentQuestion) { %}
+
+					<li class="active"><a href="#">{%= i %}</a></li>
+				{% } else { %}
+					<li><a href="#" onclick="changeQuestion({%= i %});">{%= i %}</a></li>
+
+				{% } %}
+			{% } %}
+
+		</ul>
+
+		<div class="test-block__area">
+			<span class="test-block__area__question">Question: </span><br>
+			<input type="text" class="test-block__area__question input" placeholder="Question" value="question">
+			<ul class="test-block__area__answers">
+				<li><small>Check right answer</small></li>
+
+				{% for (let i=0; i < o.answers.length; i++) { %}
+					{% if (i === o.selected) { %}
+
+							<input type="radio" name="answer" checked 
+								onclick="selectAnswer({%= o.currentQuestion %}, $(this).parent().children('input.answer').val());">
+							<input type="text" class="answer input" placeholder="Answer" value="{%= o.answers[i] %}">
+						</label></li>
+					{% } else { %}
+						<li><label>
+							<input type="radio" name="answer"
+								onclick="selectAnswer({%= o.currentQuestion %}, $(this).parent().children('input.answer').val());">
+							<input type="text" class="answer input" placeholder="Answer" value="{%= o.answers[i] %}">
+						</label></li>
+
+					{% } %}
+				{% } %}
+
+			</ul>
+		</div>
+
+
+		<div class="test-block__controls">
+			<!-- <button type="button" class="test-block__controls__btn" 
+							onclick="$('ul.test-block__area__answers>li:last-child').remove();">-</button>
+			<button type="button" class="test-block__controls__btn" 
+							onclick="addOption();">+</button> -->
+			<button type="button" class="test-block__controls__btn right btn-success"
+							onclick="saveData();">SAVE</button>
+		</div>
+	</div>
+</script>
+
+<script src="js/addTests.js"></script>
+</body>
+</html>
